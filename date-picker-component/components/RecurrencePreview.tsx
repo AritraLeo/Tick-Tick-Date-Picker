@@ -1,19 +1,20 @@
-"use client"
+"use client";
+
 // components/RecurrencePreview.tsx
 import { useDatePicker } from './DatePickerContext';
 import { useEffect, useState } from 'react';
+import { addDays, addWeeks, addMonths, addYears, format, isBefore } from 'date-fns';
 
 const RecurrencePreview = () => {
-    const { recurrence, dateRange } = useDatePicker();
+    const { recurrence, customization, dateRange } = useDatePicker();
     const [previewDates, setPreviewDates] = useState<string[]>([]);
 
     useEffect(() => {
         if (dateRange.start && recurrence) {
-            // Here you would calculate the recurrence based on the selected options
-            const newDates = calculateRecurrence(recurrence, dateRange);
+            const newDates = calculateRecurrence(recurrence, customization, dateRange);
             setPreviewDates(newDates);
         }
-    }, [recurrence, dateRange]);
+    }, [recurrence, customization, dateRange]);
 
     return (
         <div>
@@ -28,24 +29,56 @@ const RecurrencePreview = () => {
 };
 
 // Utility function to calculate the recurring dates
-const calculateRecurrence = (recurrence: string, dateRange: { start: string | null; end: string | null }) => {
-    const startDate = new Date(dateRange.start!);
-    const endDate = dateRange.end ? new Date(dateRange.end) : new Date(startDate);
+const calculateRecurrence = (
+    recurrence: string,
+    customization: { interval: number; days: string[] },
+    dateRange: { start: string | null; end: string | null }
+) => {
+    if (!dateRange.start) return [];
+
+    const startDate = new Date(dateRange.start);
+    const endDate = dateRange.end ? new Date(dateRange.end) : null;
     const dates: string[] = [];
 
-    // Recurrence logic here - for demonstration, this just adds the start date
-    dates.push(startDate.toDateString());
+    let currentDate = new Date(startDate);
+    const interval = customization.interval > 0 ? customization.interval : 1; // Default to 1 if no interval is provided
 
-    // Handle different recurrence types (daily, weekly, monthly, yearly)
-    if (recurrence === 'weekly') {
-        // Example: Add weekly occurrences
-        let nextDate = new Date(startDate);
-        while (nextDate <= endDate) {
-            nextDate.setDate(nextDate.getDate() + 7); // Add 7 days for weekly recurrence
-            dates.push(nextDate.toDateString());
-        }
+    // Add the initial start date
+    dates.push(format(currentDate, 'EEE MMM dd yyyy'));
+
+    // Recurrence logic
+    switch (recurrence) {
+        case 'daily':
+            while (endDate && isBefore(currentDate, endDate)) {
+                currentDate = addDays(currentDate, interval);
+                dates.push(format(currentDate, 'EEE MMM dd yyyy'));
+            }
+            break;
+
+        case 'weekly':
+            while (endDate && isBefore(currentDate, endDate)) {
+                currentDate = addWeeks(currentDate, interval);
+                dates.push(format(currentDate, 'EEE MMM dd yyyy'));
+            }
+            break;
+
+        case 'monthly':
+            while (endDate && isBefore(currentDate, endDate)) {
+                currentDate = addMonths(currentDate, interval);
+                dates.push(format(currentDate, 'EEE MMM dd yyyy'));
+            }
+            break;
+
+        case 'yearly':
+            while (endDate && isBefore(currentDate, endDate)) {
+                currentDate = addYears(currentDate, interval);
+                dates.push(format(currentDate, 'EEE MMM dd yyyy'));
+            }
+            break;
+
+        default:
+            break;
     }
-    // todo: (monthly, yearly, etc.)
 
     return dates;
 };
