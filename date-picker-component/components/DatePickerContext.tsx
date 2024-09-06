@@ -7,8 +7,8 @@ interface DatePickerContextProps {
     setRecurrence: (recurrence: string) => void;
     customization: Customization;
     setCustomization: (customization: Customization) => void;
-    dateRange: DateRange;
-    setDateRange: (dateRange: DateRange) => void;
+    dateRange: { start: string | null; end: string | null };
+    setDateRange: (range: { start: string | null; end: string | null }) => void;
 }
 
 interface Customization {

@@ -2,3 +2,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+    margin: 0 auto;
+}
+
+.custom-container {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    height: auto;
+    margin-top: -100px;
+    width: auto;
+    padding: 3rem 3rem;
+    margin-left: -200px;
+}

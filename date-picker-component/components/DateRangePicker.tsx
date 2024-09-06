@@ -7,6 +7,7 @@ const DateRangePicker = () => {
 
     const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
+        console.log(name + " " + value);
         setDateRange({ ...dateRange, [name]: value });
     };
 

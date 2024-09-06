@@ -27,7 +27,7 @@ const CustomizationPanel = () => {
                     className="border p-2 rounded"
                     min="1"
                 />
-                <span className="ml-2">{recurrence.slice(0, -2)}(s)</span>
+                <span className="ml-2">{recurrence === 'daily' ? 'day' : recurrence.slice(0, -2)}(s)</span>
             </div>
 
             {recurrence === 'weekly' && (
