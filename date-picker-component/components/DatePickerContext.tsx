@@ -1,5 +1,4 @@
-"use client"
-// components/DatePickerContext.tsx
+"use client";
 import { createContext, useState, useContext, ReactNode } from 'react';
 
 interface DatePickerContextProps {
@@ -13,7 +12,8 @@ interface DatePickerContextProps {
 
 interface Customization {
     interval: number;
-    days: string[];
+    days: string[]; // for weekly recurrence
+    nthDayOfMonth?: number; // for nth day of the month recurrence
 }
 
 interface DateRange {
@@ -25,12 +25,23 @@ const DatePickerContext = createContext<DatePickerContextProps | undefined>(unde
 
 export const DatePickerProvider = ({ children }: { children: ReactNode }) => {
     const [recurrence, setRecurrence] = useState<string>('daily');
-    const [customization, setCustomization] = useState<Customization>({ interval: 1, days: [] });
+    const [customization, setCustomization] = useState<Customization>({
+        interval: 1,
+        days: [],
+        nthDayOfMonth: undefined // Initialize with undefined
+    });
     const [dateRange, setDateRange] = useState<DateRange>({ start: null, end: null });
 
     return (
         <DatePickerContext.Provider
-            value={{ recurrence, setRecurrence, customization, setCustomization, dateRange, setDateRange }}
+            value={{
+                recurrence,
+                setRecurrence,
+                customization,
+                setCustomization,
+                dateRange,
+                setDateRange,
+            }}
         >
             {children}
         </DatePickerContext.Provider>

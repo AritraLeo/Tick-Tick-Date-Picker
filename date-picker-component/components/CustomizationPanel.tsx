@@ -1,4 +1,4 @@
-"use client"
+"use client";
 // components/CustomizationPanel.tsx
 import { useDatePicker } from './DatePickerContext';
 
@@ -14,6 +14,14 @@ const CustomizationPanel = () => {
             ? customization.days.filter((d) => d !== day)
             : [...customization.days, day];
         setCustomization({ ...customization, days });
+    };
+
+    const updateNthDayOfMonth = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setCustomization({ ...customization, nthDayOfMonth: parseInt(e.target.value) });
+    };
+
+    const updateDayOfWeek = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setCustomization({ ...customization, days: [e.target.value] });
     };
 
     return (
@@ -44,6 +52,29 @@ const CustomizationPanel = () => {
                                 {day}
                             </button>
                         ))}
+                    </div>
+                </div>
+            )}
+
+            {recurrence === 'monthly' && (
+                <div className="mt-4">
+                    <label>Select nth day of the month:</label>
+                    <div className="flex space-x-2 mt-2">
+                        <select onChange={updateNthDayOfMonth} className="border p-2 rounded">
+                            {[1, 2, 3, 4].map((nth) => (
+                                <option key={nth} value={nth}>
+                                    {nth === 1 ? 'First' : nth === 2 ? 'Second' : nth === 3 ? 'Third' : 'Fourth'}
+                                </option>
+                            ))}
+                        </select>
+
+                        <select onChange={updateDayOfWeek} className="border p-2 rounded">
+                            {['0', '1', '2', '3', '4', '5', '6'].map((day) => (
+                                <option key={day} value={day}>
+                                    {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][parseInt(day)]}
+                                </option>
+                            ))}
+                        </select>
                     </div>
                 </div>
             )}
