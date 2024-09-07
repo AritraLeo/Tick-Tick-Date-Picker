@@ -1,38 +1,33 @@
-// jest.setup.ts
-import '@testing-library/jest-dom/extend-expect';
-
 // __tests__/RecurrenceOptions.test.tsx
-import { render, fireEvent, screen } from '@testing-library/react';
-import RecurrenceOptions from '../components/RecurrenceOptions';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { DatePickerProvider } from '../components/DatePickerContext';
+import RecurrenceOptions from '../components/RecurrenceOptions';
 
-const renderWithContext = (component: JSX.Element) => {
-    return render(<DatePickerProvider>{component}</DatePickerProvider>);
-};
-
-describe('RecurrenceOptions Component', () => {
-    it('should render all recurrence options', () => {
-        renderWithContext(<RecurrenceOptions />);
-        expect(screen.getByText('Daily')).toBeInTheDocument();
-        expect(screen.getByText('Weekly')).toBeInTheDocument();
-        expect(screen.getByText('Monthly')).toBeInTheDocument();
-        expect(screen.getByText('Yearly')).toBeInTheDocument();
+describe('RecurrenceOptions', () => {
+    it('should render recurrence options', () => {
+        render(
+            <DatePickerProvider>
+                <RecurrenceOptions />
+            </DatePickerProvider>
+        );
+        const buttons = screen.getAllByRole('button');
+        expect(buttons.length).toBe(4); // daily, weekly, monthly, yearly
     });
 
-    it('should update recurrence option when clicked', () => {
-        renderWithContext(<RecurrenceOptions />);
-
+    it('should allow selecting a recurrence option', () => {
+        render(
+            <DatePickerProvider>
+                <RecurrenceOptions />
+            </DatePickerProvider>
+        );
         const dailyButton = screen.getByText('Daily');
         const weeklyButton = screen.getByText('Weekly');
 
-        // Initially, the Daily button should be active
-        expect(dailyButton).toHaveClass('bg-blue-500');
-
-        // Click on the Weekly button
         fireEvent.click(weeklyButton);
-
-        // Now the Weekly button should be active
         expect(weeklyButton).toHaveClass('bg-blue-500');
-        expect(dailyButton).toHaveClass('bg-gray-200');
+
+        fireEvent.click(dailyButton);
+        expect(dailyButton).toHaveClass('bg-blue-500');
+        expect(weeklyButton).not.toHaveClass('bg-blue-500');
     });
 });

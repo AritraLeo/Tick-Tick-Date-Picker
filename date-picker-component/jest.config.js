@@ -1,9 +1,10 @@
-// jest.config.js
 module.exports = {
     preset: 'ts-jest',
     testEnvironment: 'jsdom',
-    moduleNameMapper: {
-        '^@/(.*)$': '<rootDir>/$1',
+    transform: {
+        '^.+\\.(ts|tsx)$': 'ts-jest', // Transform TypeScript and TSX files
+        '^.+\\.(js|jsx)$': 'babel-jest', // Transform JavaScript and JSX files
     },
-    setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
+    moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
+    setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'], // Your Jest setup file
 };
