@@ -15,14 +15,18 @@ module.exports = {
     preset: 'ts-jest',
     testEnvironment: 'jsdom',
     transform: {
-        '^.+\\.(ts|tsx)$': 'ts-jest', // Transform TypeScript and TSX files
+        '^.+\\.(ts|tsx)$': ['ts-jest', {
+            tsconfig: '<rootDir>/tsconfig.json', // Ensure tsconfig is referenced here
+            isolatedModules: true,  // Speed up tests without full type-checking
+        }],
     },
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-    setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'], // Your Jest setup file
-    globals: {
-        'ts-jest': {
-            tsconfig: '<rootDir>/tsconfig.json',  // Make sure Jest uses the correct TypeScript configuration
-            isolatedModules: true, // Speeds up tests without type-checking
-        },
+    setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],  // Jest setup file if necessary
+    transformIgnorePatterns: [
+        'node_modules/(?!@babel/runtime)',  // Ensure node_modules can be transformed
+    ],
+    moduleNameMapper: {
+        '\\.(css|less|scss)$': 'identity-obj-proxy',  // Mock CSS imports, optional
     },
 };
+

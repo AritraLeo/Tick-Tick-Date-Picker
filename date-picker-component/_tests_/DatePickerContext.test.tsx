@@ -1,5 +1,6 @@
 // __tests__/DatePickerContext.test.tsx
-import { renderHook, act } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react-hooks';
+import { act } from 'react';
 import { DatePickerProvider, useDatePicker } from '../components/DatePickerContext';
 
 describe('DatePickerContext', () => {

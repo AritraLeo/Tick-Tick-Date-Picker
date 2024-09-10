@@ -40,10 +40,11 @@ const CustomizationPanel = () => {
 
             {recurrence === 'weekly' && (
                 <div className="mt-4">
-                    <label>Select days of the week:</label>
+                    <label htmlFor="day-of-week">Select days of the week:</label>
                     <div className="flex space-x-2 mt-2">
                         {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day) => (
                             <button
+                                id="day-of-week"
                                 key={day}
                                 onClick={() => toggleDay(day)}
                                 className={`px-3 py-1 rounded ${customization.days.includes(day) ? 'bg-blue-500 text-white' : 'bg-gray-200'
@@ -58,9 +59,9 @@ const CustomizationPanel = () => {
 
             {recurrence === 'monthly' && (
                 <div className="mt-4">
-                    <label>Select nth day of the month:</label>
+                    <label htmlFor="nth-day">Select nth day of the month:</label>
                     <div className="flex space-x-2 mt-2">
-                        <select onChange={updateNthDayOfMonth} className="border p-2 rounded">
+                        <select id="nth-day" onChange={updateNthDayOfMonth} className="border p-2 rounded">
                             {[1, 2, 3, 4].map((nth) => (
                                 <option key={nth} value={nth}>
                                     {nth === 1 ? 'First' : nth === 2 ? 'Second' : nth === 3 ? 'Third' : 'Fourth'}

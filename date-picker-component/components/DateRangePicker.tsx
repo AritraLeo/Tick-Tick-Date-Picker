@@ -14,8 +14,9 @@ const DateRangePicker = () => {
     return (
         <div className="flex space-x-4 mt-4">
             <div>
-                <label>Start Date:</label>
+                <label htmlFor="start-date">Start Date:</label>
                 <input
+                    id="start-date"
                     type="date"
                     name="start"
                     value={dateRange.start || ''}
@@ -24,8 +25,9 @@ const DateRangePicker = () => {
                 />
             </div>
             <div>
-                <label>End Date:</label>
+                <label htmlFor="end-date">End Date:</label>
                 <input
+                    id="end-date"
                     type="date"
                     name="end"
                     value={dateRange.end || ''}
